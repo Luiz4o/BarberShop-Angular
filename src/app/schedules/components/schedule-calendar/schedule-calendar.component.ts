@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { SERVICES_TOKEN } from '../../../services/service.token';
 import { DialogManagerService } from '../../../services/dialog-manager.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -44,14 +44,15 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     { provide: SERVICES_TOKEN.HTTP.YESNODIALOG, useClass: DialogManagerService }
   ]
 })
-export class ScheduleCalendarComponent implements AfterViewInit, OnChanges, OnInit {
+export class ScheduleCalendarComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   constructor(
     @Inject(SERVICES_TOKEN.HTTP.YESNODIALOG) private readonly dialogManagerService: IDialogManagerService,
   ) { }
 
+
   get selected(): Date {
-    return this.selected
+    return this._selected
   }
 
   set selected(selected: Date) {
@@ -62,7 +63,7 @@ export class ScheduleCalendarComponent implements AfterViewInit, OnChanges, OnIn
     }
   }
 
-  ngOnInit(): void {
+  ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe()
     }

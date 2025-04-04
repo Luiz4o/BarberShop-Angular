@@ -16,6 +16,7 @@ export class ClientsService implements IClientService {
 
 
   save(request: SaveClientRequest): Observable<SaveClientResponse> {
+    console.log(request)
     return this.http.post<SaveClientResponse>(`${this.basePath}clients`, request)
   }
   update(id: number, request: UptadeClientRequest): Observable<UpdateClientResponse> {

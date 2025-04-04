@@ -24,6 +24,22 @@ import { CustomPaginator } from './custom-paginator';
 })
 export class ClientTableComponent implements AfterViewInit, OnChanges, OnDestroy {
 
+
+
+  @Input() clients: ClientModelTable[] = []
+
+  dataSource!: MatTableDataSource<ClientModelTable>
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator
+
+  displayedColumns: string[] = ['name', 'email', 'phone', 'actions']
+
+  private dialogManagerServicesSubscriptions?: Subscription
+
+  @Output() onConfirmDelete = new EventEmitter<ClientModelTable>()
+
+  @Output() onRequestUpdate = new EventEmitter<ClientModelTable>()
+
   constructor(
     @Inject(SERVICES_TOKEN.HTTP.YESNODIALOG) private readonly dialogManagerService: IDialogManagerService
   ) { }
@@ -44,20 +60,6 @@ export class ClientTableComponent implements AfterViewInit, OnChanges, OnDestroy
       this.dialogManagerServicesSubscriptions.unsubscribe()
     }
   }
-
-  @Input() clients: ClientModelTable[] = []
-
-  dataSource!: MatTableDataSource<ClientModelTable>
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator
-
-  displayedColumns: string[] = ['name', 'email', 'phone', 'actions']
-
-  private dialogManagerServicesSubscriptions?: Subscription
-
-  @Output() onConfirmDelete = new EventEmitter<ClientModelTable>()
-
-  @Output() onRequestUpdate = new EventEmitter<ClientModelTable>()
 
   formatPhone(phone: string) {
     return `(${phone.substring(0, 2)}) ${phone.substring(2, 7)} - ${phone.substring(7)}`
